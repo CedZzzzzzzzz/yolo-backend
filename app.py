@@ -32,7 +32,7 @@ def preprocess_image(image_data):
     except Exception as e:
         raise ValueError(f"Error processing image: {str(e)}")
 
-@app.route('/api/detect', methods=['POST'])
+@app.route('/detect', methods=['POST'])
 def detect():
     try:
         data = request.get_json()
