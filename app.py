@@ -1,23 +1,23 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from ultralytics import YOLO
-from PIL import Image  # <--- NEW IMPORT
+from PIL import Image
 import io
 
 app = Flask(__name__)
 CORS(app)
 
-# Load the model
+# Load Model
 try:
+    # Try loading custom model first
     model = YOLO('best.pt')
 except Exception as e:
-    print(f"Error loading model: {e}")
-    # Fallback if best.pt is missing
+    print(f"Custom model not found: {e}, using fallback.")
     model = YOLO('yolov8n.pt')
 
 @app.route('/')
 def home():
-    return "YOLO Backend is Active!"
+    return "Backend is Active!"
 
 @app.route('/detect', methods=['POST'])
 def detect():
@@ -26,36 +26,31 @@ def detect():
             return jsonify({'error': 'No image uploaded'}), 400
         
         file = request.files['image']
-        
-        # 🔧 FIX: Convert raw file to PIL Image
         img_bytes = file.read()
         img = Image.open(io.BytesIO(img_bytes))
         
         # Run detection
         results = model(img)
         
-        # Process results
-        data = []
+        # Format the result for the Frontend
+        detection = None
         for r in results:
             for box in r.boxes:
-                # Get class name safely
-                class_id = int(box.cls[0])
-                class_name = model.names[class_id]
-                
-                data.append({
-                    "objectType": class_name,
+                detection = {
+                    "detected": True,  # <--- THIS IS THE MISSING KEY!
+                    "objectType": model.names[int(box.cls[0])],
                     "confidence": float(box.conf[0]),
                     "bbox": box.xywh.tolist()
-                })
+                }
+                break # Just take the first detection
         
-        # Return result
-        if len(data) > 0:
-            return jsonify(data[0]) # Return first detection
+        if detection:
+            return jsonify(detection)
         else:
-            return jsonify({"detected": False, "message": "Nothing detected"})
+            return jsonify({"detected": False, "message": "Nothing found"})
 
     except Exception as e:
-        print(f"ERROR: {str(e)}") # Print error to Render logs
+        print(f"Error: {e}")
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
