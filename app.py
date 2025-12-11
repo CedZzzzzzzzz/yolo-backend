@@ -9,7 +9,6 @@ CORS(app)
 
 # Load Model
 try:
-    # Try loading custom model first
     model = YOLO('best.pt')
 except Exception as e:
     print(f"Custom model not found: {e}, using fallback.")
@@ -29,20 +28,18 @@ def detect():
         img_bytes = file.read()
         img = Image.open(io.BytesIO(img_bytes))
         
-        # Run detection
-        results = model(img)
+        results = model(img, conf = 0.10)
         
-        # Format the result for the Frontend
         detection = None
         for r in results:
             for box in r.boxes:
                 detection = {
-                    "detected": True,  # <--- THIS IS THE MISSING KEY!
+                    "detected": True,
                     "objectType": model.names[int(box.cls[0])],
                     "confidence": float(box.conf[0]),
                     "bbox": box.xywh.tolist()
                 }
-                break # Just take the first detection
+                break 
         
         if detection:
             return jsonify(detection)
