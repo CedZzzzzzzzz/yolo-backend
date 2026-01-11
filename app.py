@@ -11,7 +11,7 @@ from datetime import datetime
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "https://crime-detection-system-steel.vercel.app/"}})
 
 # Initialize Gemini AI
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
