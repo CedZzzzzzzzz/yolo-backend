@@ -9,3 +9,13 @@ opencv-python-headless==4.8.1.78
 gunicorn==21.2.0
 python-dotenv
 google-generativeai
+
+# RAG dependencies - Let pip auto-resolve
+langchain
+langchain-community
+langchain-huggingface
+transformers>=4.30.0,<4.36.0
+sentence-transformers>=3.0.0
+faiss-cpu>=1.7.4
+pypdf>=3.0.0
+docx2txt

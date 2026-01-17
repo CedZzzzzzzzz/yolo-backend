@@ -45,5 +45,9 @@ Thumbs.db
 # Logs
 *.log
 
-# Model files (OPTIONAL - see note below)
-# best.pt
+# YOLO Models (auto-downloaded)
+yolov8n.pt
+
+# RAG Documents
+rules_documents/*.pdf
+rules_documents/*.docx
