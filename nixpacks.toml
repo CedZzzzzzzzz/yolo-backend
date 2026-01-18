@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ['python313', 'gcc', 'zlib', 'libjpeg', 'freetype', 'lcms2', 'openjpeg', 'libtiff', 'libwebp']
+nixPkgs = ['python311', 'gcc', 'zlib', 'libjpeg', 'freetype', 'lcms2', 'openjpeg', 'libtiff', 'libwebp']
 
 [phases.install]
 cmds = ['pip install --upgrade pip', 'pip install -r requirements.txt']
@@ -11,15 +11,6 @@ cmds = []
 cmd = 'gunicorn app:app --bind 0.0.0.0:$PORT --timeout 300 --workers 1 --threads 8'
 ```
 
-
-Create `aptfile` in `yolo-backend/`:
+Create `.python-version` in `yolo-backend/`:
 ```
-python3-dev
-build-essential
-libjpeg-dev
-zlib1g-dev
-libfreetype6-dev
-liblcms2-dev
-libopenjp2-7-dev
-libtiff-dev
-libwebp-dev
+3.11.0
