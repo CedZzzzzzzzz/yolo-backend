@@ -7,7 +7,7 @@ import os
 from datetime import datetime
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "https://crime-detection-system-steel.vercel.app"}})
 
 # Load YOLO Model
 try:
