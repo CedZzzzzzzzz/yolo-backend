@@ -38,6 +38,9 @@ def home():
 
 @app.route('/detect', methods=['POST', 'OPTIONS'])
 def detect():
+
+    if request.method == 'OPTIONS':
+        return '', 200
     """Crime scene detection with bounding boxes"""
     try:
         if 'image' not in request.files:
